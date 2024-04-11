@@ -6,8 +6,12 @@
 // for a hint.
 
 
+fn main(){
+    
+}
+
 #[test]
-fn main() {
+fn test() {
     let vec0 = vec![22, 44, 66];
 
     let mut vec1 = fill_vec(vec0.clone());
