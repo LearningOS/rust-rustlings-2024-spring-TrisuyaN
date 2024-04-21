@@ -2,11 +2,15 @@
 	double linked list reverse
 	This problem requires you to reverse a doubly linked list
 */
-// I AM NOT DONE
+// I AM NOT DON
+// NICE!
+
+// 哦原来是双向链表啊
 
 use std::fmt::{self, Display, Formatter};
 use std::ptr::NonNull;
 use std::vec::*;
+use std::ptr;
 
 #[derive(Debug)]
 struct Node<T> {
@@ -72,10 +76,42 @@ impl<T> LinkedList<T> {
             },
         }
     }
-	pub fn reverse(&mut self){
-		// TODO
+}
+
+// no ret val so we can't just traverse in a direction and copy the vals TT
+impl<T: Clone> LinkedList<T>{
+    pub fn reverse(&mut self){
+		let mut l2rp = self.start;
+        let mut r2lp = self.end;
+
+        loop {
+            match (l2rp, r2lp) {
+                (Some(lnode), Some(rnode)) => {
+                    unsafe{
+                        let t = (*lnode.as_ptr()).val.clone();
+                        (*lnode.as_ptr()).val = (*rnode.as_ptr()).val.clone();
+                        (*rnode.as_ptr()).val = t;
+
+                        l2rp = (*lnode.as_ptr()).next;
+                        if ptr::eq(l2rp.unwrap().as_ptr(), r2lp.unwrap().as_ptr()) {
+                            break;
+                        }
+                        r2lp = (*rnode.as_ptr()).prev;
+                        if ptr::eq(l2rp.unwrap().as_ptr(), r2lp.unwrap().as_ptr()) {
+                            break;
+                        }
+                    }
+
+
+                    //std::mem::swap((*lnode.as_ptr()).val, (*rnode.as_ptr()).val);
+                }
+                _ => {}
+            }
+        }
 	}
 }
+
+
 
 impl<T> Display for LinkedList<T>
 where

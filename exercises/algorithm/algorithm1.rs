@@ -2,7 +2,7 @@
 	single linked list merge
 	This problem requires you to merge two ordered singly linked lists into one ordered singly linked list
 */
-// I AM NOT DONE
+// I AM NOT DON
 
 use std::fmt::{self, Display, Formatter};
 use std::ptr::NonNull;
@@ -69,14 +69,69 @@ impl<T> LinkedList<T> {
             },
         }
     }
+}
+
+// got my own solution. great!
+impl<T: Clone + std::cmp::PartialOrd> LinkedList<T>{
+    // note: a and b has been ordered
 	pub fn merge(list_a:LinkedList<T>,list_b:LinkedList<T>) -> Self
 	{
-		//TODO
-		Self {
-            length: 0,
-            start: None,
-            end: None,
+        let mut res = LinkedList::<T>::new();
+        let mut acur = list_a.start;
+        let mut bcur = list_b.start;
+
+        loop {
+            match (acur, bcur) {
+                (Some(pa), Some(pb)) => {
+                    let a = unsafe{(*pa.as_ptr()).val.clone()};
+                    let b = unsafe{(*pb.as_ptr()).val.clone()};
+                    if a <= b {
+                        res.add(unsafe{(*pa.as_ptr()).val.clone()});
+                        unsafe{acur = (*pa.as_ptr()).next}
+                    } else {
+                        res.add(unsafe{(*pb.as_ptr()).val.clone()});
+                        unsafe{bcur = (*pb.as_ptr()).next}
+                    }
+                },
+                (Some(pa), None) => {
+                    res.add(unsafe{(*pa.as_ptr()).val.clone()});
+                    unsafe{acur = (*pa.as_ptr()).next}
+                },
+                (None, Some(pb)) => {
+                    res.add(unsafe{(*pb.as_ptr()).val.clone()});
+                    unsafe{bcur = (*pb.as_ptr()).next}
+                },
+                (None, None) => {
+                    break;
+                }
+            }
         }
+        res
+        // let ai: i32 = 0;
+        // let bi: i32 = 0;
+        // if ai < list_a.length as i32 && bi < list_b.length as i32 {
+        //     match (list_a.get(ai), list_b.get(bi)) {
+        //         (Some(x), Some(y)) => {
+
+        //         },
+        //         (Some(x), None) => {
+                    
+        //         },
+        //         (None, Some(y)) => {
+                    
+        //         },
+        //         (None, None) => {
+                    
+        //         }
+        //     }
+        // }
+
+		// //TODO
+		// Self {
+        //     length: 0,
+        //     start: None,
+        //     end: None,
+        // }
 	}
 }
 
