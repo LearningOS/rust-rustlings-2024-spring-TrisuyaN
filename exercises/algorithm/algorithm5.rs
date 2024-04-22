@@ -3,7 +3,7 @@
 	This problem requires you to implement a basic BFS algorithm
 */
 
-//I AM NOT DONE
+//I AM NOT DON
 use std::collections::VecDeque;
 
 // Define a graph
@@ -11,6 +11,7 @@ struct Graph {
     adj: Vec<Vec<usize>>, 
 }
 
+// 好吧这是邻接链表
 impl Graph {
     // Create a new graph with n vertices
     fn new(n: usize) -> Self {
@@ -19,6 +20,7 @@ impl Graph {
         }
     }
 
+    // 无向图 好的
     // Add an edge to the graph
     fn add_edge(&mut self, src: usize, dest: usize) {
         self.adj[src].push(dest); 
@@ -31,6 +33,25 @@ impl Graph {
 		//TODO
 
         let mut visit_order = vec![];
+        let mut vis: Vec<bool> = vec![false; self.adj.len()+1];
+        let mut queue: VecDeque<_> = [start].into();
+
+        //todo!();
+
+        visit_order.push(start);
+        queue.push_back(start);
+        vis[start] = true;
+        while !queue.is_empty() {
+            for &i in self.adj[*queue.front().unwrap()].iter(){
+                if !vis[i as usize] {
+                    vis[i as usize] = true;
+                    visit_order.push(i);
+                    queue.push_back(i);
+                }
+            }
+            queue.pop_front();
+        }
+
         visit_order
     }
 }

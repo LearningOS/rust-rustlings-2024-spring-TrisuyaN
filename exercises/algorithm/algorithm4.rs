@@ -3,7 +3,7 @@
 	This problem requires you to implement a basic interface for a binary tree
 */
 
-//I AM NOT DONE
+//I AM NOT DON
 use std::cmp::Ordering;
 use std::fmt::Debug;
 
@@ -50,13 +50,21 @@ where
 
     // Insert a value into the BST
     fn insert(&mut self, value: T) {
-        //TODO
+        if let Some(ref mut rootn) = self.root {
+            insert_curn(rootn.as_mut(), value);
+        } else {
+            self.root = Some(Box::new(TreeNode::new(value)));
+        }
     }
 
     // Search for a value in the BST
     fn search(&self, value: T) -> bool {
-        //TODO
-        true
+        
+        if let Some(ref rn) = self.root {
+            search_curn(rn, value)
+        } else{
+            false
+        }
     }
 }
 
@@ -65,10 +73,57 @@ where
     T: Ord,
 {
     // Insert a node into the tree
-    fn insert(&mut self, value: T) {
-        //TODO
+    // fn insert(&mut self, value: T) {
+    //     if value >= self.value {
+    //         if let None = self.right {
+    //             self.right = Some(Box::new(TreeNode::new(value)));
+    //         } else {
+    //             self.insert(self.right, value);
+    //         }
+    //     } else {
+
+    //     }
+    // }
+}
+
+fn insert_curn<T: std::cmp::Ord>(node: &mut TreeNode<T>, value: T) {
+    if value > node.value {
+        if let Some(ref mut rn) = node.right {
+            insert_curn(rn.as_mut(), value);
+        } else {
+            node.right = Some(Box::new(TreeNode::new(value)));
+        }
+    } else if value < node.value {
+        if let Some(ref mut ln) = node.left {
+            insert_curn(ln.as_mut(), value);
+        } else {
+            node.left = Some(Box::new(TreeNode::new(value)));
+        }
     }
 }
+
+fn search_curn<T: std::cmp::Ord>(node: &TreeNode<T>, value: T) -> bool {
+    if node.value == value {
+        return true;
+    } else if node.value > value {
+        if let Some(ln) = node.left.as_ref() {
+            return search_curn(ln, value);
+        };
+    } else if node.value < value {
+        if let Some(lr) = node.right.as_ref() {
+            return search_curn(lr, value);
+        };
+    }
+    return false;
+}
+
+// fn search_curn<T: std::cmp::Ord>(node: &TreeNode<T>, value: T) -> bool {
+//     match node.value.cmp(&value) {
+//         Ordering::Equal => true,
+//         Ordering::Less => node.right.as_ref().map_or(false, |n| search_curn(n, value)),
+//         Ordering::Greater => node.left.as_ref().map_or(false, |n| search_curn(n, value)),
+//     }
+// }
 
 
 #[cfg(test)]

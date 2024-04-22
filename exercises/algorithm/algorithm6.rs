@@ -3,7 +3,7 @@
 	This problem requires you to implement a basic DFS traversal
 */
 
-// I AM NOT DONE
+// I AM NOT DON
 use std::collections::HashSet;
 
 struct Graph {
@@ -22,8 +22,25 @@ impl Graph {
         self.adj[dest].push(src); 
     }
 
+    // 和实例绑定的方法感觉不好递归...？试试 哦哦原来是这样的
+    // dfs_util就是为了方便递归，给dfs用的
+    // HashSet是好的
     fn dfs_util(&self, v: usize, visited: &mut HashSet<usize>, visit_order: &mut Vec<usize>) {
         //TODO
+        if visited.get(&v) == None {
+            visited.insert(v);
+            visit_order.push(v);
+        }
+        
+        for &i in self.adj[v].iter() {
+            if visited.get(&i) == None {
+                visited.insert(i);
+                visit_order.push(i);
+                self.dfs_util(i, visited, visit_order);
+                //visited.remove(&i);
+            }
+        }
+
     }
 
     // Perform a depth-first search on the graph, return the order of visited nodes
