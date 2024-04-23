@@ -3,7 +3,7 @@
 	This question requires you to use a stack to achieve a bracket match
 */
 
-// I AM NOT DONE
+// I AM NOT DON
 #[derive(Debug)]
 struct Stack<T> {
 	size: usize,
@@ -29,10 +29,6 @@ impl<T> Stack<T> {
 	fn push(&mut self, val: T) {
 		self.data.push(val);
 		self.size += 1;
-	}
-	fn pop(&mut self) -> Option<T> {
-		// TODO
-		None
 	}
 	fn peek(&self) -> Option<&T> {
 		if 0 == self.size {
@@ -68,6 +64,31 @@ impl<T> Stack<T> {
 		iterator
 	}
 }
+
+impl<T: Clone> Stack<T>{
+	fn pop(&mut self) -> Option<T> {
+		// TODO
+		if !self.is_empty(){
+			let ret = self.data[self.size-1].clone();
+			self.data.pop();
+			self.size-=1;
+			return Some(ret);
+		} else {
+			return None;
+		}
+	}
+
+	fn top(&mut self) -> Option<T> {
+		// TODO
+		if !self.is_empty(){
+			let ret = self.data[self.size-1].clone();
+			return Some(ret);
+		} else {
+			return None;
+		}
+	}
+}
+
 struct IntoIter<T>(Stack<T>);
 impl<T: Clone> Iterator for IntoIter<T> {
 	type Item = T;
@@ -102,7 +123,22 @@ impl<'a, T> Iterator for IterMut<'a, T> {
 fn bracket_match(bracket: &str) -> bool
 {
 	//TODO
-	true
+	let mut s = Stack::<char>::new();
+	for c in bracket.chars() {
+		if !s.is_empty() {
+			match (s.top().unwrap(), c) {
+				('{', '}') | ('(', ')') | ('[', ']') => {
+					s.pop();
+					continue;
+				},
+				_ => {}
+			}
+		}
+		if c == '{' || c == '(' || c == '[' || c == ']' || c == ')' || c == '}' {
+			s.push(c);
+		}
+	}
+	s.size == 0
 }
 
 #[cfg(test)]
